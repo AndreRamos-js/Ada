@@ -11,7 +11,7 @@ def cria_audio(audio, mensagem):
     tts.save(audio)
     playsound(audio)
 
-cria_audio('welcome.mp3','Olá sou Ada sua assistente virtual. Em que posso ajudar?')
+cria_audio('audios/welcome.mp3','Olá sou Ada sua assistente virtual. Em que posso ajudar?')
 
 recon = sr.Recognizer()
 
@@ -20,4 +20,4 @@ with sr.Microphone() as source:
     audio = recon.listen(source) #Ouve o que for dito na captura de audio
 
 frase = recon.recognize_google(audio,language="pt-br")
-cria_audio('mensagem.mp3',frase)
+cria_audio('audios/mensagem.mp3',frase)
