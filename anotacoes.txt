@@ -1,0 +1,2 @@
+NOTA: Foi averiguado que para o funcionamento correto do reconhecimento de voz, 
+a versão da biblioteca playsound deve ser a 1.2.2
