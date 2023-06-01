@@ -5,6 +5,9 @@ import pyaudio
 import os
 import sys
 from datetime import datetime 
+import webbrowser as browser
+import pyautogui
+import time
 
 
 
@@ -16,6 +19,7 @@ def cria_audio(audio, mensagem):
 
 cria_audio('audios/welcome.mp3','Olá sou Ada sua assistente virtual. Em que posso ajudar?')
 
+#-----------------------------------------------------#
 def monitora_audio():
     recon = sr.Recognizer()
 
@@ -34,6 +38,7 @@ def monitora_audio():
                 pass
         return mensagem
 
+#-----------------------------------------------------#
 def executa_comando(mensagem):
     if 'fechar assistente' in mensagem:
         sys.exit()
@@ -47,6 +52,16 @@ def executa_comando(mensagem):
         os.system('shutdown -s -t 1800')
     elif 'cancelar desligamento' in mensagem:
         os.system('shutdown -a')
+    elif 'toca' and 'vampiro' in mensagem:
+        tocar_musicas('vampiro')
+        cria_audio('audios/mensagem.mp3','Tocando Vampiro no Spotify')
+
+#-----------------------------------------------------#
+def tocar_musicas(musica):
+    if musica == 'vampiro':
+        browser.open("https://open.spotify.com/intl-pt/track/6bTdZ7xfKp3NqqADJ8HLyj?si=14c5e310956047d5")
+
+#-----------------------------------------------------#
 
 def main():
     while True:
