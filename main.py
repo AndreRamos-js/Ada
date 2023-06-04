@@ -10,6 +10,8 @@ import pyautogui
 import time
 from requests import get
 from bs4 import BeautifulSoup
+from random import randint
+
 
 
 def cria_audio(audio, mensagem):
@@ -58,6 +60,26 @@ def executa_comando(mensagem):
         cria_audio('audios/mensagem.mp3','Tocando Vampiro no Spotify')
     elif 'notícias' in mensagem:
         ultimas_noticias()
+    elif 'jogo de adivinhação' in mensagem:
+        jogo_adivinhacao()
+
+#-----------------------------------------------------#
+def jogo_adivinhacao():
+    cria_audio('audios/adivinha.mp3','Escolha um número entre 1 a 10')
+    recon = sr.Recognizer()
+
+    with sr.Microphone() as source:
+        print('Diga algo')
+        audio = recon.listen(source) #Ouve o que for dito na captura de audio
+
+    numero = recon.recognize_google(audio,language="pt-br")
+    resultado = randint(1,10)
+
+    if numero == str(resultado):
+        cria_audio('audios/venceu.mp3', 'Parabéns! Você adivinhou o número.')
+    else:
+        mensagem = f'Que pena! Você errou, o número era {resultado}.'
+        cria_audio('audios/perdeu.mp3', mensagem)
 
 #-----------------------------------------------------#
 def ultimas_noticias():
