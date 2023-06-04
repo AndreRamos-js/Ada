@@ -1,2 +1,6 @@
 NOTA: Foi averiguado que para o funcionamento correto do reconhecimento de voz, 
 a versão da biblioteca playsound deve ser a 1.2.2
+
+NOTA: Para que a integração com Spotify seja bem sucedida, é necessario que o programa Spotify
+esteja instalado na maquina e que a configuração de "abrir no aplicativo" esteja habilitada
+no navegador padrão.
