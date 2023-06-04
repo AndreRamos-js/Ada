@@ -8,7 +8,8 @@ from datetime import datetime
 import webbrowser as browser
 import pyautogui
 import time
-
+from requests import get
+from bs4 import BeautifulSoup
 
 
 def cria_audio(audio, mensagem):
@@ -55,6 +56,16 @@ def executa_comando(mensagem):
     elif 'toca' and 'vampiro' in mensagem:
         tocar_musicas('vampiro')
         cria_audio('audios/mensagem.mp3','Tocando Vampiro no Spotify')
+    elif 'notícias' in mensagem:
+        ultimas_noticias()
+
+#-----------------------------------------------------#
+def ultimas_noticias():
+    site = get('https://news.google.com/news/rss?ned=pt-br&gl=BR&hl=pt')
+    noticias = BeautifulSoup(site.text, 'lxml-xml')  # Usando o analisador XML
+    for item in noticias.find_all('item')[:4]:
+        mensagem = item.title.text
+        cria_audio('audios/mensagem.mp3',mensagem)
 
 #-----------------------------------------------------#
 def tocar_musicas(musica):
