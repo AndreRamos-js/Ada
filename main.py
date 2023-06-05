@@ -9,12 +9,20 @@ import webbrowser as browser
 import pyautogui
 import time
 from requests import get
+import requests
+from requests.structures import CaseInsensitiveDict
 from bs4 import BeautifulSoup
 from random import randint
 import json
 
 
 
+headers = CaseInsensitiveDict()
+headers['Accept'] = 'application/json'
+headers['Authorization'] = 'Bearer live_6bb50dbeb75a454dc38b14a1c1a13b'
+url ='https://api.api-futebol.com.br/v1/campeonatos/10/tabela'
+
+#-----------------------------------------------------#
 def cria_audio(audio, mensagem):
     tts = gTTS(mensagem, lang="pt-br")
     tts.save(audio)
@@ -51,25 +59,29 @@ def executa_comando(mensagem):
         hora = datetime.now().strftime('%H:%M')
         frase = f'Agora são {hora}'
         cria_audio('audios/mensagem.mp3', frase)
-    elif 'desligar computador' and 'uma hora' in mensagem:
+    elif 'desligar computador' in mensagem and 'uma hora' in mensagem:
         os.system('shutdown -s -t 3600')
-    elif 'desligar computador' and 'meia hora' in mensagem:
+    elif 'desligar computador' in mensagem and 'meia hora' in mensagem:
         os.system('shutdown -s -t 1800')
     elif 'cancelar desligamento' in mensagem:
         os.system('shutdown -a')
-    elif 'toca' and 'vampiro' in mensagem:
+    elif 'toca' in mensagem and 'vampiro' in mensagem:
         tocar_musicas('vampiro')
         cria_audio('audios/mensagem.mp3','Tocando Vampiro no Spotify')
     elif 'notícias' in mensagem:
         ultimas_noticias()
     elif 'jogo de adivinhação' in mensagem:
         jogo_adivinhacao()
-    elif 'cotação' and 'dólar' in mensagem:
+    elif 'cotação' in mensagem and 'dólar' in mensagem:
         cotacao_moeda('Dólar')
-    elif 'cotação' and 'euro' in mensagem:
+    elif 'cotação' in mensagem and 'euro' in mensagem:
         cotacao_moeda('Euro')
-    elif 'cotação' and 'bitcoin' in mensagem:
+    elif 'cotação' in mensagem and 'bitcoin' in mensagem:
         cotacao_moeda('Bitcoin')
+    elif 'times' in mensagem and 'libertadores' or 'primeiras colocações' in mensagem:
+        lista_g6()
+    elif 'times' in mensagem and 'zona de rebaixamento' in mensagem:
+        lista_rebaixamento()
 
 #-----------------------------------------------------#
 def jogo_adivinhacao():
@@ -128,6 +140,21 @@ def cotacao_moeda(moeda):
 def tocar_musicas(musica):
     if musica == 'vampiro':
         browser.open("https://open.spotify.com/intl-pt/track/6bTdZ7xfKp3NqqADJ8HLyj?si=14c5e310956047d5")
+
+#-----------------------------------------------------#
+def lista_g6():
+    response = requests.get(url, headers=headers)
+    classificacao = json.loads(response.text)
+    for g6 in classificacao[:6]:
+        times = g6['time']['nome_popular']
+        cria_audio('audios/mensagem.mp3', times)
+
+def lista_rebaixamento():
+    response = requests.get(url, headers=headers)
+    classificacao = json.loads(response.text)
+    for z4 in classificacao[-4:]:
+        times = z4['time']['nome_popular']
+        cria_audio('audios/mensagem.mp3', times)
 
 #-----------------------------------------------------#
 
