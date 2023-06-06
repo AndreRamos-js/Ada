@@ -80,7 +80,7 @@ def executa_comando(mensagem):
         cotacao_moeda('Bitcoin')
     elif 'times' in mensagem and 'libertadores' or 'primeiras colocações' in mensagem:
         lista_g6()
-    elif 'times' in mensagem and 'zona de rebaixamento' in mensagem:
+    elif 'zona de rebaixamento' in mensagem:
         lista_rebaixamento()
 
 #-----------------------------------------------------#
