@@ -6,4 +6,7 @@ url = 'https://api.themoviedb.org/4/discover/movie?sort_by=popularity.desc&api_k
 resposta = urllib.request.urlopen(url)
 dados = resposta.read()
 jsondata = json.loads(dados)
-print(jsondata['results'])
+filmes = jsondata['results']
+
+for filme in filmes[:5]:
+    print(filme['title'])

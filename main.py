@@ -14,6 +14,7 @@ from requests.structures import CaseInsensitiveDict
 from bs4 import BeautifulSoup
 from random import randint
 import json
+import urllib.request, json
 
 
 
@@ -82,6 +83,14 @@ def executa_comando(mensagem):
         lista_g6()
     elif 'zona de rebaixamento' in mensagem:
         lista_rebaixamento()
+    elif 'filmes' in mensagem and 'populares' in mensagem:
+        lista_filmes('popular')
+    elif 'filmes' in mensagem and 'crianças' in mensagem:
+        lista_filmes('kids')
+    elif 'filmes' in mensagem and '2010' in mensagem:
+        lista_filmes('2010')
+    elif 'filmes' in mensagem and 'drama' in mensagem:
+        lista_filmes('drama')
 
 #-----------------------------------------------------#
 def jogo_adivinhacao():
@@ -155,6 +164,25 @@ def lista_rebaixamento():
     for z4 in classificacao[-4:]:
         times = z4['time']['nome_popular']
         cria_audio('audios/mensagem.mp3', times)
+
+#-----------------------------------------------------#
+def lista_filmes(recurso):
+    if recurso == 'popular':
+        url = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=d0d65ac8842befae9b0115007936b366'
+    elif recurso == 'kids':
+        url = 'https://api.themoviedb.org/3/discover/movie?certification_country=US&certification.lte=G&sort_by=popularity.desc&api_key=d0d65ac8842befae9b0115007936b366'
+    elif recurso == '2010':
+        url = 'https://api.themoviedb.org/3/discover/movie?primary_relese_year=2010&sort_by=vote_average.desc&api_key=d0d65ac8842befae9b0115007936b366'
+    elif recurso == 'drama':
+        url = 'https://api.themoviedb.org/3/discover/movie?with_genres=18&sort_by=vote_average.desc&vote_count.gte=10&api_key=d0d65ac8842befae9b0115007936b366'
+
+    resposta = urllib.request.urlopen(url)
+    dados = resposta.read()
+    jsondata = json.loads(dados)
+    filmes = jsondata['results']
+
+    for filme in filmes[:5]:
+        cria_audio('audios/mensagem.mp3', filme['title'])
 
 #-----------------------------------------------------#
 
